@@ -23,9 +23,14 @@ export const authOptions = {
       async authorize(credentials) {
         await connectDB();
         try {
-          const user = await UserModel.findOne({ email: credentials.email });
-          console.log(user, credentials);
+          const user = await UserModel.findOne(
+            $or[({ email: credentials }, { username: credentials })]
+          );
+
           if (user) {
+            if (!user.isVerified) {
+              return new Error("Please verify your email address to login");
+            }
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               user.password
@@ -34,10 +39,10 @@ export const authOptions = {
             if (isPasswordCorrect) {
               return user;
             } else {
-              return null;
+              return new Error("Invalid Credentials");
             }
           }
-          return null;
+          return new Error("User not found");
         } catch (error) {
           throw new Error(error.message);
         }
@@ -46,15 +51,36 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async signIn({ user, account }) {
-      console.log("user", user, "account", account);
-      if (account?.provider == "credentials") {
-        return true;
-      } else {
-        return new Error("Invalid Credentials");
+    async jwt(token, user) {
+      if (user) {
+        token._id = user._id;
+        token.email = user.email;
+        token.username = user.username;
+        token.isVerified = user.isVerified;
+        token.isAcceptingMessages = user.isAcceptingMessages;
       }
+      return token;
+    },
+    async session(session, token) {
+      if (token) {
+        session.user._id = token._id;
+        session.user.email = token.email;
+        session.user.username = token.username;
+        session.user.isVerified = token.isVerified;
+        session.user.isAcceptingMessages = token.isAcceptingMessages;
+        return session;
+      }
+      session.user = token;
+      return session;
     },
   },
+  pages: {
+    signIn: "/login",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export const handler = NextAuth(authOptions);
