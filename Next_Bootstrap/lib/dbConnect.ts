@@ -8,13 +8,15 @@ type connectionObject = {
 const connection: connectionObject = {};
 
 export default async function dbConnect() {
-  if (connection.isConnected) {
+  if (connection.isConnected == 1) {
     return true;
   }
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || "", {});
+    const conn = await mongoose.connect(process.env.MONGODB_URI || "");
     connection.isConnected = conn.connections[0].readyState;
-    return connection.isConnected ? true : new Error("DB connection failed");
+    return connection.isConnected == 1
+      ? true
+      : new Error("DB connection failed");
   } catch (err) {
     console.log(err);
     return false;

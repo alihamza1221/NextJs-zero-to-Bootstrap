@@ -12,6 +12,7 @@ const messageSchema: Schema<Message> = new Schema({
 
 export interface User extends Document {
   email: string;
+  username: string;
   password: string;
   verificationCode: string;
   verificationCodeExpiration: Date;
@@ -30,7 +31,13 @@ const UserSchema: Schema<User> = new Schema({
     lowercase: true,
     match: [emailRegex, "Please fill a valid email address"],
   },
-  password: { type: String, required: true, trim: true, minlength: 2 },
+  username: { type: String, required: true, trim: true, minlength: 2 },
+  password: {
+    type: String,
+    required: [true, "username can't be empty"],
+    trim: true,
+    minlength: 2,
+  },
   verificationCode: {
     type: String,
     required: [true, "verification code is required"],
@@ -39,7 +46,7 @@ const UserSchema: Schema<User> = new Schema({
     type: Date,
     required: [true, "verification code expiry is required"],
   },
-  isVerified: { type: Boolean, default: false },
+  isVerified: { type: Boolean, default: false, required: true },
   isAcceptingMessages: { type: Boolean, default: true },
   messages: [messageSchema],
 });

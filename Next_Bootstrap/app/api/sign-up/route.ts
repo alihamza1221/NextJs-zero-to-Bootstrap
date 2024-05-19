@@ -1,22 +1,21 @@
 import UserModel from "@/model/UserModel";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse, NextRequest } from "next/server";
 import sendVerificationEmail from "@/helpers/sendVerificationEmail";
 import dbConnect from "@/lib/dbConnect";
 import bcrypt from "bcrypt";
 
-export default async function POST(
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> {
+export async function POST(req: NextRequest, res: NextResponse): Promise<any> {
   await dbConnect();
-  const { username, email, password } = req.body;
+  const { username, email, password } = await req.json();
+  console.log(username, email, password);
   try {
     const existingUserAlreadyVerified = await UserModel.findOne({
       username,
       isVerified: true,
     });
+
     if (existingUserAlreadyVerified) {
-      return res.status(400).json({
+      return Response.json({
         success: false,
         status: 400,
         message: "username already exists",
@@ -24,13 +23,15 @@ export default async function POST(
     }
     const existUserByEmail = await UserModel.findOne({ email });
     const verificationCode = Math.random().toString(36).substring(7);
+
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const expiryDate = new Date();
     expiryDate.setHours(expiryDate.getHours() + 1);
 
     if (existUserByEmail) {
       if (existUserByEmail.isVerified) {
-        return res.status(400).json({
+        return Response.json({
           success: false,
           status: 400,
           message: "User already exists",
@@ -64,11 +65,15 @@ export default async function POST(
       verificationCode,
     });
     if (emailResponse.success) {
-      return res.status(201).json(emailResponse.message);
+      return Response.json({
+        success: true,
+        status: 201,
+        message: emailResponse.message,
+      });
     }
     throw new Error(emailResponse.message?.toString());
   } catch (err: any) {
-    return res.status(500).json({
+    return Response.json({
       success: false,
       status: 500,
       message: err?.message,
