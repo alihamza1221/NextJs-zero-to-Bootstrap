@@ -9,15 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.4.2",
     "@tanstack/react-query": "^5.37.1",
     "@tanstack/react-query-devtools": "^5.37.1",
     "axios": "^1.7.2",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.51.5"
+    "react-hook-form": "^7.51.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@tanstack/eslint-plugin-query": "^5.35.6",
     "@types/node": "^20",
     "@types/react": "^18",
