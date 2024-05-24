@@ -5,6 +5,8 @@ import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { getServerSession } from "next-auth/next";
 const inter = Inter({ subsets: ["latin"] });
+import React from "react";
+import ToastProvider from "@/components/ui/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Next.js 0 to Bootstrap",
@@ -19,10 +21,11 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession(nextAuthOptions);
   return (
-    <AuthProvider session={session}>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </AuthProvider>
+    <html lang="en">
+      <AuthProvider session={session}>
+        <body className={` ${inter.className}`}>{children}</body>
+      </AuthProvider>{" "}
+      <ToastProvider />
+    </html>
   );
 }
