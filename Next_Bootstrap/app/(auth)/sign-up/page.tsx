@@ -9,12 +9,13 @@ import { userSignUpSchema } from "@/schemas/userSignUpSchema";
 import { useDebounceCallback } from "usehooks-ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { Skeleton } from "@/components/ui/skeleton";
 
-var count = 0;
 export default function SignUP() {
-  count += 1;
   const [UserName, setUserName] = useState("");
   const [isUniqueUserName, setIsUniqueUserName] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
   const debounced = useDebounceCallback(setUserName, 500);
@@ -38,7 +39,7 @@ export default function SignUP() {
     mode: "onBlur",
     resolver: zodResolver(userSignUpSchema),
   });
-  const { errors, isLoading, isDirty, isValid, isSubmitSuccessful } = formState;
+  const { errors, isLoading, isDirty, isValid } = formState;
   //checking if username unique on keypress
   useEffect(() => {
     const subscription = watch((value: any) => {
@@ -58,33 +59,49 @@ export default function SignUP() {
             `/api/usernameValidation?username=${UserName}`
           );
           setIsUniqueUserName(response.data.success);
-          console.log("in-res: ", isUniqueUserName);
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponse>;
           setIsUniqueUserName(false);
           console.log(axiosError.response?.data.message);
         }
+      } else {
+        setIsUniqueUserName(false);
       }
     };
     checkUsernameUnique();
   }, [UserName]);
 
   const submitHandler = async (data: SignUpForm) => {
+    setIsSubmitting(true);
     console.log(data);
-  };
-  useEffect(() => {
-    console.log("ineff: ", isUniqueUserName);
-  }, [isUniqueUserName]);
+    if (!isValid || !isDirty) {
+      toast.info("Please fill the form correctly");
+    }
 
-  return (
+    try {
+      const response = await axios.post<ApiResponse>("/api/sign-up", data);
+
+      if (response.data.success) {
+        router.push(`/verify/${data.username}`);
+      }
+      toast.success("Registration Successful");
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      console.log(axiosError.response?.data.message);
+      toast.error(axiosError.response?.data.message as String);
+    } finally {
+      setIsSubmitting(false);
+      reset();
+    }
+  };
+
+  return !isLoading && !isSubmitting ? (
     <div className="w-full h-screen flex items-center ">
       <form
         className="bg-slate-50 container min-h-[30rem] flex md:w-[30%] max-h-[40rem] w-full max-w-screen-md p-5  justify-center items-center border-2 rounded-sm border-slate-50 shadow-md flex-col"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <h1 className="text-center text-3xl font-bold my-3">
-          Register, {count / 2}
-        </h1>
+        <h1 className="text-center text-3xl font-bold my-3">Register</h1>
         <div className="form-field w-[85%] p-3">
           <label
             htmlFor="username"
@@ -100,13 +117,15 @@ export default function SignUP() {
           />
           <p
             className={`${
-              errors.username || !isUniqueUserName
-                ? "text-red-500"
-                : "text-black"
+              !isUniqueUserName ? "text-red-500" : "text-black"
             } text-xs`}
           >
             {" "}
-            {isUniqueUserName && <span>"username available" </span>}
+            {isUniqueUserName ? (
+              <span>username available</span>
+            ) : (
+              errors.username?.message
+            )}
           </p>
         </div>
         <div className="form-field w-[85%] p-3">
@@ -138,7 +157,7 @@ export default function SignUP() {
             Password
           </label>
           <input
-            type="text"
+            type="password"
             id="password"
             {...register("password")}
             className="input-form-field"
@@ -171,6 +190,16 @@ export default function SignUP() {
           </Link>
         </span>
       </form>
+    </div>
+  ) : (
+    <div className="w-full h-screen flex flex-col gap-0 items-center ">
+      <div className="m-auto flex items-center space-x-1">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-1">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
     </div>
   );
 }
