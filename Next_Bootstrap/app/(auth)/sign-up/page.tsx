@@ -10,7 +10,7 @@ import { useDebounceCallback } from "usehooks-ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SpinnerColors } from "@/components/ui/Spinner";
 
 export default function SignUP() {
   const [UserName, setUserName] = useState("");
@@ -82,7 +82,7 @@ export default function SignUP() {
       const response = await axios.post<ApiResponse>("/api/sign-up", data);
 
       if (response.data.success) {
-        router.push(`/verify/${data.username}`);
+        router.replace(`/verify/${data.username}`);
       }
       toast.success("Registration Successful");
     } catch (error) {
@@ -192,14 +192,8 @@ export default function SignUP() {
       </form>
     </div>
   ) : (
-    <div className="w-full h-screen flex flex-col gap-0 items-center ">
-      <div className="m-auto flex items-center space-x-1">
-        <Skeleton className="h-12 w-12 rounded-full" />
-        <div className="space-y-1">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
+    <div className="flex w-full h-screen justify-center items-center ">
+      <SpinnerColors />
     </div>
   );
 }

@@ -23,9 +23,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <AuthProvider session={session}>
-        <body className={` ${inter.className}`}>{children}</body>
-      </AuthProvider>{" "}
-      <ToastProvider />
+        <body className={` ${inter.className}`}>{children}</body>{" "}
+        <ToastProvider />
+      </AuthProvider>
     </html>
   );
 }

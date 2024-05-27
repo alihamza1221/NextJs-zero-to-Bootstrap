@@ -33,7 +33,10 @@ export async function POST(req: Request) {
     user.messages.push(curMessage);
     await user.save();
 
-    return Response.json({ success: true, message: "Message Sent" });
+    return Response.json(
+      { success: true, message: "Message Sent" },
+      { status: 200 }
+    );
   } catch (err: any) {
     return Response.json(
       {
