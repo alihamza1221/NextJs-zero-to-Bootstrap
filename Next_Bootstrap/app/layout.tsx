@@ -21,11 +21,13 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession(nextAuthOptions);
   return (
-    <html lang="en">
-      <AuthProvider session={session}>
-        <body className={` ${inter.className}`}>{children}</body>{" "}
-        <ToastProvider />
-      </AuthProvider>
-    </html>
+    <AuthProvider session={session}>
+      <html lang="en">
+        <body className={` ${inter.className}`}>
+          {children}
+          <ToastProvider />
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

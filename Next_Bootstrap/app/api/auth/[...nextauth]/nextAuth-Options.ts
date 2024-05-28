@@ -3,6 +3,7 @@ import UserModel from "@/model/UserModel";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 import bcrypt from "bcrypt";
+import { setEngine } from "crypto";
 
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
@@ -44,7 +45,7 @@ export const nextAuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token._id = user._id?.toString();
         token.isVerified = user.isVerified;
@@ -52,6 +53,10 @@ export const nextAuthOptions: NextAuthOptions = {
         token.isAcceptingMessages = user.isAcceptingMessages;
         token.email = user.email;
       }
+      if (trigger === "update" && session?.isAcceptingMessages) {
+        token.isAcceptingMessages = session.isAcceptingMessages;
+      }
+      console.log(token);
       return token;
     },
     async session({ session, token }) {
