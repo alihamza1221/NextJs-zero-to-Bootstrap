@@ -53,10 +53,15 @@ export const nextAuthOptions: NextAuthOptions = {
         token.isAcceptingMessages = user.isAcceptingMessages;
         token.email = user.email;
       }
-      if (trigger === "update" && session?.isAcceptingMessages) {
-        token.isAcceptingMessages = session.isAcceptingMessages;
+
+      if (trigger === "update") {
+        console.log("triggered", session);
+        if (session?.isAcceptingMessages !== undefined) {
+          console.log("session defined");
+          token.isAcceptingMessages = session.isAcceptingMessages;
+        }
       }
-      console.log(token);
+
       return token;
     },
     async session({ session, token }) {
