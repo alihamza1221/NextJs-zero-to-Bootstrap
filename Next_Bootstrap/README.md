@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Full Stack Project
+
+## Overview
+This project is a full-stack application built with Next.js, utilizing various modern technologies to provide authentication, user messaging, and a dynamic user interface. It features user sign-up with email verification, user-specific messaging capabilities, and suggestions for messages using OpenAI API. The UI components are styled with Material Tailwind.
+
+## Features
+- **User Authentication**: Implemented with NextAuth's credentials provider.
+- **Email Verification**: Utilizes the Resend API for verifying user emails during sign-up.
+- **Dashboard**: Upon signing in, users are redirected to a dashboard where they can view messages sent to them by other users.
+- **Message Preferences**: Users can change their status to indicate whether they want to accept messages or not.
+- **User-Specific Messaging**: Users can send messages to others by navigating to a URL formatted as `/u/[username]`.
+- **Message Suggestions**: Integrates OpenAI API to suggest messages for users to send to others.
+- **UI Components**: Styled with Material Tailwind for a modern and responsive design.
+
+## Technologies Used
+- **Next.js**: For server-side rendering and routing.
+- **NextAuth**: For authentication and session management.
+- **Resend API**: For sending and verifying emails.
+- **Tailwind CSS**: For utility-first CSS styling.
+- **Material Tailwind**: For UI components.
+- **TypeScript**: For type safety and better developer experience.
+- **React**: For building the user interface.
+- **React Email Hook**: For managing email-related functionality.
+- **React Toast Hook**: For displaying notifications.
+- **Axios**: For making API requests.
+- **OpenAI API**: For generating message suggestions.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js installed on your machine.
+- An OpenAI API key.
+- A Resend API key.
 
-```bash
+### Installation
+1. Clone the repository:
+   \`\`\`bash
+   git clone https://github.com/yourusername/nextjs-fullstack-project.git
+   cd nextjs-fullstack-project
+   \`\`\`
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
+3. Create a \`.env.local\` file in the root of your project and add the following environment variables:
+   \`\`\`
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=your-nextauth-secret
+   RESEND_API_KEY=your-resend-api-key
+   OPENAI_API_KEY=your-openai-api-key
+   \`\`\`
+
+### Running the Project
+To start the development server:
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
+Navigate to \`http://localhost:3000\` to see the application in action.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Building for Production
+To build the project for production:
+\`\`\`bash
+npm run build
+\`\`\`
+Then start the  server:
+\`\`\`bash
+npm run dev
+\`\`\`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Sign Up and Email Verification
+1. Navigate to the sign-up page and register with your email.
+2. Check your email for a verification link.
+3. Click the link to verify your email address.
 
-## Learn More
+### Dashboard
+After signing in, you will be redirected to the dashboard where you can:
+- View messages sent to you by other users.
+- Change your message acceptance status.
 
-To learn more about Next.js, take a look at the following resources:
+### Sending Messages
+To send a message to another user:
+1. Navigate to \`/u/[username]\` (replace \`[username]\` with the actual username of the recipient).
+2. Enter your message and send.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Message Suggestions
+- While composing a message, you can get suggestions from the OpenAI API to help you draft your message.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
-## Deploy on Vercel
+## License
+This project is licensed under the MIT License.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contact
+For any questions or feedback, please reach out to [your-email@example.com].
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+
+Thank you for using our Next.js Full Stack Project! We hope it helps you build amazing applications.
+"""
+
