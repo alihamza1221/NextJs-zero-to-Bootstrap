@@ -15,7 +15,7 @@ export default async function sendVerificationEmail({
   try {
     const { data, error } = await resend.emails.send({
       from: "alihamza@resend.dev",
-      to: email,
+      to: "alihamza77065@gmail.com",
       subject: "Your SASS verification Code",
       react: VerificationEmail({ username, otp: verificationCode }),
     });

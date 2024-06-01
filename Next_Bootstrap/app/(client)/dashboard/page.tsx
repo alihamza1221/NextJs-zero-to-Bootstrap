@@ -3,9 +3,10 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { Typography, Switch } from "@material-tailwind/react";
 import { UserProfileCard } from "@/components/ui/ProfileCard";
 import { ClipboardDefault } from "@/components/ui/ClipBoardCopy";
+import { useRouter } from "next/navigation";
 import { SpinnerColors } from "@/components/ui/Spinner";
 import axios, { AxiosError } from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Message } from "@/model/UserModel";
@@ -30,6 +31,7 @@ import {
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [isTaskLoading, setIsTaskLoading] = useState(false);
+  const [isFetchingMessages, setIsFetchingMessages] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
   const { data: session, status, update } = useSession();
@@ -38,6 +40,7 @@ export default function Dashboard() {
     console.log("useEffect: ", session?.user.isAcceptingMessages);
   }, [session?.user.isAcceptingMessages]);
 
+  const router = useRouter();
   const updateUserIsAcceptingMessages = async (userMessageChoice: boolean) => {
     if (isTaskLoading) {
       console.log("Already in progress!!");
@@ -64,7 +67,7 @@ export default function Dashboard() {
   };
 
   const fetchMessages = useCallback(async () => {
-    setIsTaskLoading(true);
+    setIsFetchingMessages(true);
     try {
       const response = await axios.get("/api/getMessages");
       if (response.data.success) {
@@ -77,7 +80,7 @@ export default function Dashboard() {
     } catch (error: AxiosError | any) {
       toast.error(error.message);
     } finally {
-      setIsTaskLoading(false);
+      setIsFetchingMessages(false);
     }
   }, [setMessages]);
 
@@ -104,12 +107,7 @@ export default function Dashboard() {
             </ListItemPrefix>
             Dashboard
           </ListItem>
-          <ListItem>
-            <ListItemPrefix>
-              <ShoppingBagIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            E-Commerce
-          </ListItem>
+
           <ListItem>
             <ListItemPrefix>
               <InboxIcon className="h-5 w-5" />
@@ -125,7 +123,11 @@ export default function Dashboard() {
               />
             </ListItemSuffix>
           </ListItem>
-          <ListItem>
+          <ListItem
+            onClick={() => {
+              router.replace("dashboard");
+            }}
+          >
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
@@ -137,7 +139,7 @@ export default function Dashboard() {
             </ListItemPrefix>
             Settings
           </ListItem>
-          <ListItem>
+          <ListItem onClick={() => signOut()}>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>
@@ -152,19 +154,24 @@ export default function Dashboard() {
           username={session?.user.username || "User"}
           email={session?.user.email || "example@email.com"}
         />
-        <Switch
-          defaultChecked={session?.user.isAcceptingMessages}
-          onChange={async (e: any) => {
-            const val = e.target.checked as boolean;
-            await updateUserIsAcceptingMessages(val);
-            update({ isAcceptingMessages: val });
-          }}
-          crossOrigin={undefined}
-        ></Switch>
+        <div className="block">
+          <Typography variant="paragraph">
+            Are you Accepting Messages?
+          </Typography>{" "}
+          <Switch
+            defaultChecked={session?.user.isAcceptingMessages}
+            onChange={async (e: any) => {
+              const val = e.target.checked as boolean;
+              await updateUserIsAcceptingMessages(val);
+              update({ isAcceptingMessages: val });
+            }}
+            crossOrigin={undefined}
+          ></Switch>
+        </div>
         <ClipboardDefault ProfileUrl={profileUrl} />
         <div className="mt-6 right">
           <Button
-            loading={isTaskLoading}
+            loading={isFetchingMessages}
             variant="text"
             className="rounded-full"
             onClick={async () => {
@@ -182,12 +189,14 @@ export default function Dashboard() {
                   <>
                     <div
                       key={message._id}
-                      className="flex justify-between w-full rounded-lg bg-blue-400  p-3"
+                      className="flex justify-between w-full rounded-lg bg-light-white shadow-sm mb-3  p-3"
                     >
-                      <Typography variant="lead">{message.content}</Typography>{" "}
-                      <span className="inline p-1 bg-gray-300  rounded-md">
+                      <Typography variant="lead">
+                        {index} : {message.content}
+                      </Typography>{" "}
+                      <Typography variant="paragraph">
                         {message.createdAt.toString()}
-                      </span>
+                      </Typography>
                     </div>
                   </>
                 );

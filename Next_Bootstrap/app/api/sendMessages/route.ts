@@ -3,7 +3,8 @@ import dbConnect from "@/lib/dbConnect";
 import { Message } from "@/model/UserModel";
 
 export async function POST(req: Request) {
-  const { username, content } = await req.json();
+  const { username, content }: { username: string; content: string } =
+    await req.json();
 
   try {
     await dbConnect();
