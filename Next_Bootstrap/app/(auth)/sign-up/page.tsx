@@ -14,7 +14,7 @@ import { SpinnerColors } from "@/components/ui/Spinner";
 
 export default function SignUP() {
   const [UserName, setUserName] = useState("");
-  const [isUniqueUserName, setIsUniqueUserName] = useState(false);
+  const [isUniqueUserName, setIsUniqueUserName] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
@@ -83,6 +83,8 @@ export default function SignUP() {
 
       if (response.data.success) {
         router.replace(`/verify/${data.username}`);
+      } else if (response.data) {
+        toast.info(response.data.message as string);
       }
       toast.success("Registration Successful");
     } catch (error) {
@@ -124,7 +126,8 @@ export default function SignUP() {
             {isUniqueUserName ? (
               <span>username available</span>
             ) : (
-              errors.username?.message
+              errors.username?.message ||
+              (getValues("username") && "Username is not available")
             )}
           </p>
         </div>
