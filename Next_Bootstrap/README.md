@@ -1,5 +1,5 @@
 # Next.js Full Stack Project
-
+[Watch the Video](https://drive.google.com/file/d/1KpfrDCwIIcTmcFHCxtKi68pScI4_tE4o/view?usp=sharing)
 ## Overview
 This project is a full-stack application built with Next.js, utilizing various modern technologies to provide authentication, user messaging, and a dynamic user interface. It features user sign-up with email verification, user-specific messaging capabilities, and suggestions for messages using OpenAI API. The UI components are styled with Material Tailwind.
 
@@ -94,7 +94,7 @@ Contributions are welcome! Please fork the repository and create a pull request 
 This project is licensed under the MIT License.
 
 ## Contact
-For any questions or feedback, please reach out to [your-email@example.com].
+For any questions or feedback, please reach out to alihamza77065@gmail.com.
 
 ---
 
