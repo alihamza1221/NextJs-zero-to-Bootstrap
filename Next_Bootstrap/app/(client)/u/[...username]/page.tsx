@@ -10,7 +10,9 @@ const dummyMessages: Array<string> = [
 
   "Lastly, I'd love to hear your thoughts on the future of data science. What do you think are the most important trends shaping the industry, and how do you see the field evolving in the coming years?",
 ];
- function SuggestMessages() {
+
+// no credits
+function SuggestMessages() {
   const { completion, input, handleInputChange, handleSubmit } = useCompletion({
     api: "api/suggestMessages",
   });

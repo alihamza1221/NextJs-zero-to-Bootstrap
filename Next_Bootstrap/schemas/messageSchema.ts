@@ -6,5 +6,5 @@ export const messageSchema = z.object({
     .min(2, { message: "Message must be at least 2 character long" })
     .max(100, {
       message: "Message must be at most 100 characters long",
-    }),
+    }), //
 });

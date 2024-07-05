@@ -98,9 +98,9 @@ export default function SignUP() {
   };
 
   return !isLoading && !isSubmitting ? (
-    <div className="w-full h-screen flex items-center ">
+    <div className="w-[89%] mx-auto h-screen flex justify-center items-center">
       <form
-        className="bg-slate-50 container min-h-[30rem] flex md:w-[30%] max-h-[40rem] w-full max-w-screen-md p-5  justify-center items-center border-2 rounded-sm border-slate-50 shadow-md flex-col"
+        className="bg-slate-50 min-h-[30rem] flex md:max-w-md 2xl:max-w-xl max-h-[40rem] w-full p-5  justify-center items-center border-2 rounded-sm border-slate-50 shadow-md flex-col"
         onSubmit={handleSubmit(submitHandler)}
       >
         <h1 className="text-center text-3xl font-bold my-3">Register</h1>
