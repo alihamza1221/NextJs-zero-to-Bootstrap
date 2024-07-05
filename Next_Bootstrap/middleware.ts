@@ -4,21 +4,30 @@ export { default } from "next-auth/middleware";
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
-  const url = await req.nextUrl;
+  console.log(
+    "running middleware... token",
+    token,
+    "url ",
+    req.nextUrl.pathname
+  );
+  const url = req.nextUrl;
   if (
-    (token && url.pathname.startsWith("/sign-in")) ||
-    url.pathname.startsWith("/sign-up") ||
-    url.pathname.startsWith("/verify")
+    !!token &&
+    (url.pathname.startsWith("/sign-in") ||
+      url.pathname.startsWith("/sign-up") ||
+      url.pathname.startsWith("/verify"))
   ) {
-    NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   } else if (
-    (!token && url.pathname.startsWith("/dashboard")) ||
-    url.pathname.startsWith("/")
+    !token &&
+    (url.pathname.startsWith("/dashboard") || url.pathname == "/")
   ) {
-    NextResponse.redirect(new URL("/sign-in", req.url));
+    return NextResponse.redirect(new URL("/sign-in", req.url));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard", "/sign-in", "/sign-up", "/verify/:path*"],
+  matcher: ["/", "/dashboard", "/sign-in", "/sign-up", "/verify/:path*"],
 };
