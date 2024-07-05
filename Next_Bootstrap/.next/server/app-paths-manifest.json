@@ -1,0 +1,17 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
+  "/(auth)/sign-up/page": "app/(auth)/sign-up/page.js",
+  "/(auth)/verify/[username]/page": "app/(auth)/verify/[username]/page.js",
+  "/(client)/dashboard/page": "app/(client)/dashboard/page.js",
+  "/(client)/u/[...username]/page": "app/(client)/u/[...username]/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/getMessages/route": "app/api/getMessages/route.js",
+  "/api/sendMessages/route": "app/api/sendMessages/route.js",
+  "/api/sign-up/route": "app/api/sign-up/route.js",
+  "/api/usernameValidation/route": "app/api/usernameValidation/route.js",
+  "/api/verifyUser/route": "app/api/verifyUser/route.js",
+  "/page": "app/page.js",
+  "/api/acceptMessages/route": "app/api/acceptMessages/route.js",
+  "/api/suggestMessages/route": "app/api/suggestMessages/route.js"
+}

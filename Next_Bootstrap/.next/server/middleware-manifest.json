@@ -1,0 +1,74 @@
+{
+  "version": 3,
+  "middleware": {
+    "/": {
+      "files": [
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/middleware.js"
+      ],
+      "name": "middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/(\\/?index|\\/?index\\.json))?[\\/#\\?]?$",
+          "originalSource": "/"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/dashboard(.json)?[\\/#\\?]?$",
+          "originalSource": "/dashboard"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/sign-in(.json)?[\\/#\\?]?$",
+          "originalSource": "/sign-in"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/sign-up(.json)?[\\/#\\?]?$",
+          "originalSource": "/sign-up"
+        },
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/verify(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(.json)?[\\/#\\?]?$",
+          "originalSource": "/verify/:path*"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "environments": {
+        "previewModeId": "261cd062e2c061533cd9ad62c66516e8",
+        "previewModeSigningKey": "37a509a854d3deff4ee5e1ade9e22031cd07dafc44004cbba887310684cb3bb4",
+        "previewModeEncryptionKey": "1dcc3c4302c3bd46e27cd8d453722513301e75c05e587a3fcdeb51f03b6c5499"
+      }
+    }
+  },
+  "functions": {
+    "/api/suggestMessages/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/suggestMessages/route.js"
+      ],
+      "name": "app/api/suggestMessages/route",
+      "page": "/api/suggestMessages/route",
+      "matchers": [
+        {
+          "regexp": "^/api/suggestMessages$",
+          "originalSource": "/api/suggestMessages"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "environments": {
+        "previewModeId": "261cd062e2c061533cd9ad62c66516e8",
+        "previewModeSigningKey": "37a509a854d3deff4ee5e1ade9e22031cd07dafc44004cbba887310684cb3bb4",
+        "previewModeEncryptionKey": "1dcc3c4302c3bd46e27cd8d453722513301e75c05e587a3fcdeb51f03b6c5499"
+      }
+    }
+  },
+  "sortedMiddleware": [
+    "/"
+  ]
+}
